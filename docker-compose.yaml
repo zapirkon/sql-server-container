@@ -1,0 +1,50 @@
+services:
+  mssql:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - SQL_IMAGE=${SQL_IMAGE}
+        - SQL_PORT=${SQL_PORT}
+    image: ${COMPOSE_PROJECT_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}
+    hostname: ${COMPOSE_PROJECT_NAME}
+    networks:
+      sql_network:
+        # ipv4_address: 192.168.100.99
+
+    env_file:
+      - .env
+
+    ports:
+      - "${SQL_PORT}:1433"
+
+    volumes:
+      - sqldata2:/var/opt/mssql/data2
+      - sqlbackup:/var/opt/mssql/backup
+
+volumes:
+  sqldata2: # custom data folder for restoring databases in bind mount
+    name: sqldata2
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${LOCAL_PWD}/data
+  sqlbackup:
+    name: sqlbackup
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${LOCAL_PWD}/backup
+
+networks:
+  sql_network:
+    name: ${COMPOSE_PROJECT_NAME}
+    driver: bridge
+    ipam:
+      driver: default
+      # config:
+      #   - subnet: 192.168.100.0/24
+      #     gateway: 192.168.100.1
