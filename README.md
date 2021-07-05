@@ -39,7 +39,9 @@
 ## HOWTO
 - edit the `.env` login credentials and location of where you have the data and backup folders (both under `LOCAL_PWD`)
   - if you want to test as is, [download `AdventureWorks2019.bak` from Microsoft](https://docs.microsoft.com/en-us/sql/samples/adventureworks-install-configure?view=sql-server-ver15&tabs=ssms#download-backup-files)
+- if you work on a linux partition, `sudo chown -R 10001:0 data` and `sudo chown -R 10001:0 backup` (10001 is the mssql uid)
 - `docker compose up`
+  - or `DOCKER_BUILDKIT=1 docker-compose up`
 - verify externally
   - `sqlcmd -S <ip,port> -U SA -P <SA_PASSWORD> -Q "SELECT name FROM sys.databases;"`
   - the ip address is a static on vEthernet (WSL) adapter (find it with `ipconfig`)
