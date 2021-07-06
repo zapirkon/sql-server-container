@@ -42,9 +42,4 @@ volumes:
 networks:
   sql_network:
     name: ${COMPOSE_PROJECT_NAME}
-    driver: bridge
-    ipam:
-      driver: default
-      # config:
-      #   - subnet: 192.168.100.0/24
-      #     gateway: 192.168.100.1
+    # driver: bridge
